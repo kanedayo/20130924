@@ -24,10 +24,14 @@ get '/' do
 end
 
 post '/' do
-  title = params[:title]
   Sample.create(
-    :title => title
+    :title => params[:title],
+    :ctime => Time.now
     )
   @bbs = Sample.all
   haml:bbs
+end
+
+post '/delete' do
+  Sample.find(params[:id]).destroy
 end

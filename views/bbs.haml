@@ -6,8 +6,22 @@
       %input{:type=>'text',:name=>"title"}
       %input{:type=>"submit"}
     %hr
-    - @bbs.each do |bbs|
-      %p
-        #{bbs.title}
+    - @bbs.reverse.each do |bbs|
+      %p(data-id="#{bbs.id}")
+        #{bbs.id}(#{bbs.ctime}):#{bbs.title}
+        <span class="deleteCmd" style="cursor:pointer;color:blue">[x]</span>
+
     %hr
     %a{:href => '/'} 戻る
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"}
+    :javascript
+      $('.deleteCmd').click(function(){
+        var el = $(this).parent();
+        if(confirm('are your sure to delete?')) {
+          $.post('/delete',{
+            id: el.data('id')
+          }, function(){
+            el.fadeOut(800);
+          });
+        }
+      })
